@@ -60,4 +60,13 @@ public class Car {
     public void setRentalPriseForOneDay(double rentalPriseForOneDay) {
         this.rentalPriseForOneDay = BigDecimal.valueOf(rentalPriseForOneDay);
     }
+
+    @Override
+    public String toString() {
+        return "Mark:'" + mark + '\'' +
+                ", Model:'" + model + '\'' +
+                ", Millage: " + millage +
+                ", Date Of Production: " + dateOfProduction +
+                ", Rental Prise For One Day: " + rentalPriseForOneDay + ";\n";
+    }
 }

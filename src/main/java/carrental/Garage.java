@@ -1,14 +1,17 @@
 package carrental;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class Garage {
+public class Garage extends UsefulMethods {
     private List<Car> listOfNotRentedCars = new ArrayList<>();
     private List<Car> listOfRentedCars = new ArrayList<>();
 
-    public Car createNewCar(Car car) {
+    public Car createNewCar() {
+        Car car = new Car();
         Scanner scanner = new Scanner(System.in);
         System.out.print("Set mark of new car: ");
         car.setMark(scanner.nextLine());
@@ -18,45 +21,49 @@ public class Garage {
         String carModel = car.getModel();
         String carMarkModel = carMark + " " + carModel;
         System.out.print("Set millage of new " + carMarkModel + ": ");
-        do {
-            int millage = parseIntValidator();
-            if (millage < 0) {
-                System.out.print("Millage must be bigger or equal to 0: ");
-            } else {
-                car.setMillage(millage);
-                break;
-            }
-        } while (true);
-        System.out.println("Set date of production" + carMark + ": ");
+        String millageString = "Millage";
+        car.setMillage(checkIntNumberRange(0, millageString));
+        System.out.println("Let's set the date of production " + carMarkModel + " ");
         System.out.print("Set year: ");
-        //continue there
-        //should set validator for date
+        String yearString = "Year";
+        int year = checkIntNumberRange(1950, LocalDate.now().getYear(), yearString);
+        System.out.print("Set month: ");
+        String monthString = "Month";
+        int month = checkIntNumberRange(1, 12, monthString);
+        System.out.print("Set day: ");
+        String dayString = "Day";
+        int day = checkIntNumberRange(1, 31, dayString);
+        car.setDateOfProduction(year, month, day);
+        System.out.print("Set daily price for renting a " + carMarkModel + ": ");
+        String priceString = "Price";
+        double price = checkDoubleNumberRange(0d, priceString);
+        car.setRentalPriseForOneDay(price);
         return car;
     }
 
-    private int parseIntValidator() throws NumberFormatException {
-        Scanner scanner = new Scanner(System.in);
-        String intForPars = scanner.nextLine();
-        int parsedInt = -1;
-        boolean t = false;
-        do {
-            try {
-                parsedInt = Integer.parseInt(intForPars);
-                if (parsedInt >= 0) {
-                    t = true;
-                    return parsedInt;
-                } else {
-                    t = false;
-                }
-            } catch (NumberFormatException exception) {
-                System.out.print("this is not valid number! Choose number higher or equal to 0: ");
-                t = true;
-                intForPars = scanner.nextLine();
-            }
-        }
-        while (t);
-        return parsedInt;
+    public Car firstCar(){
+        return new Car("Opel", "Corsa", 120000, LocalDate.of(2010,04,13), BigDecimal.valueOf(80.0));
     }
+    public Car secondCar(){
+        return new Car("Skoda", "Fabia", 220000, LocalDate.of(2011,07,22), BigDecimal.valueOf(110.0));
+    }
+
+    public List<Car> getListOfNotRentedCars() {
+        return listOfNotRentedCars;
+    }
+
+    public void setListOfNotRentedCars(List<Car> listOfNotRentedCars) {
+        listOfNotRentedCars.add(firstCar());
+        listOfNotRentedCars.add(secondCar());
+//        int i = 0;
+//        while(i == 100){
+            listOfNotRentedCars.add(createNewCar());
+//            i++;
+//        }
+        this.listOfNotRentedCars = listOfNotRentedCars;
+    }
+
+
 }
 
 
