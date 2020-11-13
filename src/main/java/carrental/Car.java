@@ -1,9 +1,10 @@
 package carrental;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 
-public class Car {
+public class Car extends UsefulMethods {
     private String mark;
     private String model;
     private int millage;
@@ -49,7 +50,18 @@ public class Car {
         return dateOfProduction;
     }
 
-    public void setDateOfProduction(int year, int month, int day) {
+    public void setDateOfProduction(Car car) {
+        System.out.println("Let's set the date of production " + car.getMark() + " " + car.getModel() + ". ");
+        System.out.print("Set year: ");
+        String yearString = "Year";
+        int year = checkIntNumberRange(1950, LocalDate.now().getYear(), yearString);
+        System.out.print("Set number of month: ");
+        String monthString = "Month";
+        int month = checkIntNumberRange(1, 12, monthString);
+        System.out.print("Set day: ");
+        String dayString = "Day";
+        int numberMaximumDayRange = getDaysInMonth(month, year);
+        int day = checkIntNumberRange(1, numberMaximumDayRange, dayString);
         this.dateOfProduction = LocalDate.of(year, month, day);
     }
 
@@ -58,15 +70,17 @@ public class Car {
     }
 
     public void setRentalPriseForOneDay(double rentalPriseForOneDay) {
-        this.rentalPriseForOneDay = BigDecimal.valueOf(rentalPriseForOneDay);
+
+        this.rentalPriseForOneDay = BigDecimal.valueOf(rentalPriseForOneDay).setScale(2, RoundingMode.HALF_UP);
     }
 
     @Override
     public String toString() {
-        return "Mark:'" + mark + '\'' +
+        return "\n Mark:'" + mark + '\'' +
                 ", Model:'" + model + '\'' +
                 ", Millage: " + millage +
-                ", Date Of Production: " + dateOfProduction +
-                ", Rental Prise For One Day: " + rentalPriseForOneDay + ";\n";
+                ", Date of production: " + dateOfProduction +
+                ", Rental prise for one day: " + rentalPriseForOneDay + ";\n";
     }
+
 }
