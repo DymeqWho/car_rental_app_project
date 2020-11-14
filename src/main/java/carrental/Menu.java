@@ -1,11 +1,15 @@
 package carrental;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
-public class Menu {
+public class Menu extends UsefulMethods {
     Scanner scanner = new Scanner(System.in);
     Garage garage = new Garage();
+    HashMap<Integer, Car> mapOfNotRentedCars = new HashMap<>();
 
     private void callMenu() {
         System.out.println();
@@ -47,7 +51,8 @@ public class Menu {
                     System.out.println();
                     runMenu();
                 } else if (choise == 2) {
-                    System.out.println("2.");
+                    changeRentalPrice(garage.getListOfNotRentedCars());
+                    runMenu();
                 } else if (choise == 3) {
                     garage.putCarToListOfNotRentedCars(garage.getListOfNotRentedCars());
                     System.out.println();
@@ -84,9 +89,41 @@ public class Menu {
         do {
             System.out.print("Would you like to go back to menu? (Press \"1\" or \"y\"): ");
             String option = scanner.nextLine();
-            if (option.equals("t") || option.equals("1"))
+            if (option.equals("y") || option.equals("1"))
                 break;
             else System.out.println("Wrong command. ");
         } while (true);
     }
+
+    private Car changeRentalPrice(List<Car> list) {
+
+        for (int i = 0; i < list.size(); i++) {
+            mapOfNotRentedCars.put(i + 1, list.get(i));
+        }
+        mapOfNotRentedCars.remove(0);
+        System.out.println("List of all available now cars: ");
+        System.out.println(mapOfNotRentedCars.toString().replace("=", " index: "));
+        boolean finishIt = true;
+        int whichMark;
+        do {
+            System.out.print("Which car rental price you would like to change? Sign index: ");
+            whichMark = parseIntValidator();
+            if (whichMark <= mapOfNotRentedCars.size() && whichMark >= 1) {
+                System.out.println("Chosen car is: ");
+                System.out.println(mapOfNotRentedCars.get(whichMark));
+                finishIt = false;
+            } else {
+                System.out.println("There is no such car!");
+            }
+        } while (finishIt);
+        BigDecimal oldPrice = mapOfNotRentedCars.get(whichMark).getRentalPriseForOneDay();
+        System.out.print("Actual price is: " + oldPrice + ". What new price you would like to set?: ");
+        double newPrice = parseDoubleValidator();
+        BigDecimal newPriseBDRound = BigDecimal.valueOf(newPrice).setScale(2, RoundingMode.HALF_UP);
+        System.out.print("Old price was: " + oldPrice + ". New price is: " + newPriseBDRound);
+        mapOfNotRentedCars.get(whichMark).setRentalPriseForOneDay(newPrice);
+        return mapOfNotRentedCars.get(whichMark);
+    }
+
+
 }

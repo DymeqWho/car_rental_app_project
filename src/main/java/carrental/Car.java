@@ -76,7 +76,7 @@ public class Car extends UsefulMethods {
 
     @Override
     public String toString() {
-        return "\n Mark:'" + mark + '\'' +
+        return " Mark:'" + mark + '\'' +
                 ", Model:'" + model + '\'' +
                 ", Millage: " + millage +
                 ", Date of production: " + dateOfProduction +

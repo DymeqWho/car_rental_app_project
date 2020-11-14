@@ -12,8 +12,8 @@ public class Garage extends UsefulMethods {
 
     public Garage() {
         this.listOfNotRentedCars = new ArrayList<>();
-        this.listOfNotRentedCars.add(firstCar());
-        this.listOfNotRentedCars.add(secondCar());
+        this.listOfNotRentedCars.add(0, firstCar());
+        this.listOfNotRentedCars.add(1, secondCar());
         this.listOfRentedCars = new ArrayList<>();
     }
 
@@ -35,6 +35,7 @@ public class Garage extends UsefulMethods {
         String priceString = "Price";
         double price = checkDoubleNumberRange(0d, priceString);
         car.setRentalPriseForOneDay(price);
+        System.out.println();
         String addedCarString = "New added car is: " + car.toString();
         System.out.println(addedCarString);
         do {
@@ -99,6 +100,7 @@ public class Garage extends UsefulMethods {
     public Car secondCar() {
         return new Car("Skoda", "Fabia", 220000, LocalDate.of(2011, 7, 22), BigDecimal.valueOf(110.0));
     }
+
 
     public List<Car> getListOfNotRentedCars() {
         return listOfNotRentedCars;

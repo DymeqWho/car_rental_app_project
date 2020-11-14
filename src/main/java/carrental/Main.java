@@ -3,7 +3,12 @@ package carrental;
 public class Main {
     public static void main(String[] args) {
 
-        runningMenu();
+        User user = new User();
+       // user.setPesel(01122700000L);
+        user.setDateOfBirth(user.getPesel());
+        System.out.println(user.getDateOfBirth());
+
+        //runningMenu();
     }
 
     public static void runningMenu() {

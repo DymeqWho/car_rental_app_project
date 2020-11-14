@@ -25,7 +25,7 @@ public abstract class UsefulMethods {
         } while (true);
     }
 
-    private int parseIntValidator() throws NumberFormatException {
+    int parseIntValidator() throws NumberFormatException {
         Scanner scanner = new Scanner(System.in);
         String intForPars = scanner.nextLine();
         int parsedInt = -1;
@@ -49,7 +49,7 @@ public abstract class UsefulMethods {
         return parsedInt;
     }
 
-    private double parseDoubleValidator() throws NumberFormatException {
+    double parseDoubleValidator() throws NumberFormatException {
         Scanner scanner = new Scanner(System.in);
         String intForPars = scanner.nextLine();
         double parsedInt = -1.0;
