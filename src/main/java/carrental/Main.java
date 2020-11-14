@@ -4,10 +4,11 @@ public class Main {
     public static void main(String[] args) {
 
         User user = new User();
-       // user.setPesel(01122700000L);
-        user.setDateOfBirth(user.getPesel());
-        System.out.println(user.getDateOfBirth());
 
+        user.setPesel();
+        System.out.println("user.getPesel() = " + user.getPesel());
+        user.setDateOfBirth(user.getYearOfBirth(),user.getMonthOfBirth(),user.getDayOfBirth());
+        System.out.println("user.getDateOfBirth() = " + user.getDateOfBirth());
         //runningMenu();
     }
 
