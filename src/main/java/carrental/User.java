@@ -1,8 +1,6 @@
 package carrental;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Month;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.Scanner;
@@ -16,7 +14,7 @@ public class User extends UsefulMethods {
     private int yearOfBirth;
     private int monthOfBirth;
     private int dayOfBirth;
-    private String nameLastName = getName() + " " + getLastName();
+
 
     public User() {
     }
@@ -45,37 +43,51 @@ public class User extends UsefulMethods {
         LastName = lastName;
     }
 
+
+    public String getNameLastName() {
+        return getName() + " " + getLastName();
+    }
+
     public String getPesel() {
         return pesel;
     }
 
     public void setPesel() {
         Scanner scanner = new Scanner(System.in);
-        boolean checking = false;
-        boolean isThisGoodPesel = false;
+        boolean checking = false; //needed boolean for checking if PESEL has only 11 digits.
+        boolean isThisGoodPesel = false; //needed for checking if PESEL is long enough and done by valid rules.
         int charPeselLenght = 0;
         char[] charPesel = null;
 
+        //validating all PESEL special rules until they will be ok for setting only date of birth,
+        // not until all digits will be legit by rule.
         do {
+            //validating if PESEL has enough digits until it will be correct
             do {
-                System.out.print("Set " + nameLastName + " PESEL: ");
+                //putting PESEL for validating
+                System.out.print("Set " + getNameLastName() + " PESEL: ");
                 pesel = scanner.nextLine();
-                charPesel = pesel.toCharArray();
-                charPeselLenght = charPesel.length;
+                //
+                charPesel = pesel.toCharArray(); //changing PESEL for char array
+                charPeselLenght = charPesel.length; //checking how long is car arry
 
+                //checking if PESEL has only digits.
                 for (char c : charPesel) {
-                    if (c < 48 || c > 57) {
-                        System.out.println("this is not a PESEL!");
+                    if (c < 48 || c > 57) { //used ASCII table for digits only id.
+                        System.out.println("this is not a PESEL! PESEL has only 11 digits!");
                         checking = false;
                         break;
                     } else {
                         checking = true;
                     }
                 }
+                //end of checking if PESEL has only digits. If it has only digits method will continue if not, it will
+                // ask for putting 11 digits PESEL until it will has only digits.
 
+                //validating if PESEL has 11 digits.
                 if (checking) {
                     if (charPeselLenght == 11) {
-                        this.pesel = pesel;
+                        this.pesel = pesel; //not necessary statement, but useful at least for me for code reading
                         checking = true;
                         isThisGoodPesel = true;
                     } else if (charPeselLenght < 11) {
@@ -97,88 +109,103 @@ public class User extends UsefulMethods {
                         checking = false;
                         isThisGoodPesel = false;
                     }
-
                 }
             } while (!checking);
+            //end of validating if PESEL has only 11 digits. If everything is ok method will proceed.
 
+            //acquisition of first 6 digits from PESEL, for setting date.
             String[] recoverNumberArry = new String[6];
             int[] intsArry = new int[6];
             for (int i = 0; i < charPeselLenght - 5; i++) {
-                recoverNumberArry[i] = "" + charPesel[i];
-                intsArry[i] = Integer.parseInt(recoverNumberArry[i]);
+                recoverNumberArry[i] = "" + charPesel[i]; //changing char array for String array
+                intsArry[i] = Integer.parseInt(recoverNumberArry[i]); //reading ints from parsed String array
             }
 
+            boolean itsOver1999 = false; //after year 1999 there are special rules for righting month digits.
+            // I need to check this.
+            boolean itIsValidPESEL = false; //month digits are key for validation all date of birth. They are also
+            // (in this case) validating if all PESEL is correct.
+
+            boolean wrongYear = false; //I need to check if set year digits are correct
+            boolean wrongMonth = false; //I need to check if set month digits are correct
+            boolean wrongDay = false; //I need to check if set day is correct
+
+            //getting digits responsible for month in PESEL. Digits number 3 and 4.
             int month = intsArry[2] * 10 + intsArry[3];
 
-            boolean itsOver1999 = false;
-            boolean itIsValidPESEL = false;
-
-            boolean wrongYear = false;
-            boolean wrongMonth = false;
-            boolean wrongDay = false;
-
+            //I need to check if PESEL is not from future. In this case I check what year, month and day is
+            // when this method is running
             Date dateForCurrentMonth = new Date();
             LocalDate localDate = dateForCurrentMonth.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
             int currentMonth = localDate.getMonthValue();
             int currentYear = localDate.getYear();
+            int currentDay = localDate.getDayOfMonth();
 
-            if (month > 0 && month < 13) {
+            //validating of month in PESEL if everything is ok, month will be set to DateOfBirth variable.
+            if (month > 0 && month < 13) { //checking if this month is from 1900 - 1999
                 itIsValidPESEL = true;
                 isThisGoodPesel = true;
                 this.monthOfBirth = month;
-            } else if (month > 12 && month < 33) {
+            } else if (month > 12 && month < 33) { //checking if this month is over 2000
                 month -= 20;
                 itsOver1999 = true;
                 itIsValidPESEL = true;
                 this.monthOfBirth = month;
                 isThisGoodPesel = true;
-            }
-            if (month > currentMonth && (currentYear >= yearOfBirth || currentYear == 0)) { //CHECKING
+            } else if (month > currentMonth && (currentYear >= yearOfBirth || currentYear == 0)) {
                 wrongMonth = true;
-//                System.out.println("This is invalid PESEL! Wrong at least third or fourth digit.");
                 this.monthOfBirth = 0;
             }
+            //if everything is ok, method will proceed. If not, user will be asked for putting correct PESEL
+            // and all procedure will be checked from beginning.
 
-            if (itIsValidPESEL) {
-                int year = intsArry[0] * 10 + intsArry[1];
-                if (year <= LocalDate.now().getYear() && year >= 0 && itsOver1999) {
+            //checking what year is in first and second digits in PESEL covered.
+            if (itIsValidPESEL) { //this will happen only when month in PESEL is correct.
+
+                int year = intsArry[0] * 10 + intsArry[1]; //get first and second digits form PESEL for year.
+
+                if (year <= LocalDate.now().getYear() && year >= 0 && itsOver1999) { //situation when year is over 1999
                     year += 2000;
-                } else {
+                } else {                                                              //situation when year is 1900+
                     year += 1900;
                 }
-                this.yearOfBirth = year;
+                this.yearOfBirth = year; //if year digits in PESEL are valid, this will be year of persons birth.
                 isThisGoodPesel = true;
                 if (year > currentYear) {
                     wrongYear = true;
-//                    System.out.println("This is invalid PESEL! Wrong at least first or second digit.");
                     this.yearOfBirth = 0;
                     isThisGoodPesel = false;
                 }
+                //if everything is ok, method will proceed, if not all method will start from beginning.
 
-                int day = intsArry[4] * 10 + intsArry[5];
-                if (getDaysInMonth(this.monthOfBirth, this.yearOfBirth) >= day && isThisGoodPesel) {
+                int day = intsArry[4] * 10 + intsArry[5]; // getting fifth and sixth digits responsible for day in PESEL
+
+                //validating if day in PESEL is correct.
+                if (getDaysInMonth(this.monthOfBirth, this.yearOfBirth) >= day && isThisGoodPesel) { //checking if it is
+                    //leap year and how many max days is in month covered in PESEL.
+                    // Used method for this is in class UsefullMethods.
                     this.dayOfBirth = day;
                     isThisGoodPesel = true;
-                } else {
+                } else if (currentDay > day && isThisGoodPesel) {
                     isThisGoodPesel = false;
-                }
-                int currentDay = localDate.getDayOfMonth();
-                if (day > currentDay && (currentYear >= yearOfBirth || currentYear == 0)) {
                     wrongDay = true;
-//                    System.out.println("This is invalid PESEL! Wrong at least fifth or sixth digit.");
-                    isThisGoodPesel = false;
                 }
             }
+            //if everything is ok, method will end.
+
+            //if something is wrong with year or month or day of birth this will show on screen
+            // and method will run from beginning
             if (yearOfBirth == 0 || monthOfBirth == 0 || dayOfBirth == 0) {
-                if(wrongYear)
+                if (wrongYear || yearOfBirth == 0)
                     System.out.println("This is invalid PESEL! Wrong at least first or second digit.");
-                if(wrongMonth)
+                if (wrongMonth || monthOfBirth == 0)
                     System.out.println("This is invalid PESEL! Wrong at least third or fourth digit.");
-                if(wrongDay)
+                if (wrongDay || dayOfBirth == 0)
                     System.out.println("This is invalid PESEL! Wrong at least fifth or sixth digit.");
                 isThisGoodPesel = false;
             }
-        } while (!isThisGoodPesel);
+
+        } while (!isThisGoodPesel); //this is for looping method until everything will be correct
     }
 
     public LocalDate getDateOfBirth() {
@@ -207,5 +234,13 @@ public class User extends UsefulMethods {
 
     public int getDayOfBirth() {
         return dayOfBirth;
+    }
+
+    @Override
+    public String toString() {
+        return " Name: '" + name + '\'' +
+                ", LastName: '" + LastName + '\'' +
+                ", PESEL: '" + pesel + '\'' +
+                ", Date of birth: " + dateOfBirth;
     }
 }

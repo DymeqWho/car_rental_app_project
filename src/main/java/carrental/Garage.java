@@ -103,12 +103,12 @@ public class Garage extends UsefulMethods {
 
 
     public List<Car> getListOfNotRentedCars() {
+        System.out.println("List of available, not rented yet cars: ");
         return listOfNotRentedCars;
     }
 
-    public List<Car> putCarToListOfNotRentedCars(List<Car> listOfNotRentedCars) {
+    public void putCarToListOfNotRentedCars(List<Car> listOfNotRentedCars) {
         listOfNotRentedCars.add(createNewCar());
-        return listOfNotRentedCars;
     }
 }
 

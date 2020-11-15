@@ -3,7 +3,7 @@ package carrental;
 import java.util.Scanner;
 
 public abstract class UsefulMethods {
-    int checkIntNumberRange(int numberMinimumRange, String establishedStringValue) {
+    public int checkIntNumberRange(int numberMinimumRange, String establishedStringValue) {
         do {
             int range = parseIntValidator();
             if (range < numberMinimumRange) {
@@ -14,7 +14,7 @@ public abstract class UsefulMethods {
         } while (true);
     }
 
-    int checkIntNumberRange(int numberMinimumRange, int numberMaximumRange, String establishedStringValue) {
+    public int checkIntNumberRange(int numberMinimumRange, int numberMaximumRange, String establishedStringValue) {
         do {
             int range = parseIntValidator();
             if (range < numberMinimumRange || range > numberMaximumRange) {
@@ -25,7 +25,7 @@ public abstract class UsefulMethods {
         } while (true);
     }
 
-    int parseIntValidator() throws NumberFormatException {
+    public int parseIntValidator() throws NumberFormatException {
         Scanner scanner = new Scanner(System.in);
         String intForPars = scanner.nextLine();
         int parsedInt = -1;
@@ -73,7 +73,7 @@ public abstract class UsefulMethods {
         return parsedInt;
     }
 
-    double checkDoubleNumberRange(double numberMinimumRange, String establishedStringValue) {
+    public double checkDoubleNumberRange(double numberMinimumRange, String establishedStringValue) {
         do {
             double range = parseDoubleValidator();
             if (range < numberMinimumRange) {

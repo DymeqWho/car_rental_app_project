@@ -9,6 +9,7 @@ import java.util.Scanner;
 public class Menu extends UsefulMethods {
     Scanner scanner = new Scanner(System.in);
     Garage garage = new Garage();
+    CustomersRoom customersRoom = new CustomersRoom();
     HashMap<Integer, Car> mapOfNotRentedCars = new HashMap<>();
 
     private void callMenu() {
@@ -58,11 +59,18 @@ public class Menu extends UsefulMethods {
                     System.out.println();
                     runMenu();
                 } else if (choise == 4) {
-                    System.out.println("4.");
+                    System.out.println(customersRoom.getListOfActivatedUsers().toString());
+                    chooseOption();
+                    System.out.println();
+                    runMenu();
                 } else if (choise == 5) {
-                    System.out.println("5.");
+                    customersRoom.addUserToListOfNotActivatedUsers();
+                    System.out.println();
+                    runMenu();
                 } else if (choise == 6) {
-                    System.out.println("6.");
+                    customersRoom.activateAUser(customersRoom.getListOfNotActivatedUsers());
+                    System.out.println();
+                    runMenu();
                 } else if (choise == 7) {
                     System.out.println("7.");
                 } else if (choise == 8) {
@@ -94,6 +102,17 @@ public class Menu extends UsefulMethods {
             else System.out.println("Wrong command. ");
         } while (true);
     }
+
+    private void chooseOption() {
+        do {
+            System.out.print("Would you like to go back to menu? (Press \"1\" or \"y\"): ");
+            String option = scanner.nextLine();
+            if (option.equals("y") || option.equals("1"))
+                break;
+            else System.out.println("Wrong command. ");
+        } while (true);
+    }
+
 
     private Car changeRentalPrice(List<Car> list) {
 
