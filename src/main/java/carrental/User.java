@@ -196,6 +196,8 @@ public class User extends UsefulMethods {
                 if (wrongDay || dayOfBirth == 0)
                     System.out.println("This is invalid PESEL! Wrong at least fifth or sixth digit.");
                 isThisGoodPesel = false;
+            } else {
+                setDateOfBirth(this.getYearOfBirth(), this.monthOfBirth, this.getDayOfBirth());
             }
 
         } while (!isThisGoodPesel); //this is for looping method until everything will be correct
@@ -206,7 +208,11 @@ public class User extends UsefulMethods {
     }
 
     public void setDateOfBirth(int yearOfBirth, int monthOfBirth, int dayOfBirth) {
-        this.dateOfBirth = LocalDate.of(yearOfBirth, monthOfBirth, dayOfBirth);
+        if (isValidPESELyear(yearOfBirth, monthOfBirth, dayOfBirth))
+            this.dateOfBirth = LocalDate.of(yearOfBirth, monthOfBirth, dayOfBirth);
+        else{
+            System.out.println("This is very bad PESEL! ");
+        }
     }
 
     public int getNumberOfRentedCars() {

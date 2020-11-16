@@ -41,7 +41,7 @@ public class CustomersRoom extends UsefulMethods {
         System.out.print("Set " + user.getName() + " last name: ");
         user.setLastName(scanner.nextLine());
         user.setPesel();
-        isLeapYear = isLeapPESELyear(user.getYearOfBirth(), user);
+        isLeapYear = isValidPESELyear(user.getYearOfBirth(), user);
         String choise = "";
         do {
             if (choise.equals("1") || choise.equals("n")) {
@@ -52,7 +52,12 @@ public class CustomersRoom extends UsefulMethods {
                 user.setLastName(scanner.nextLine());
             } else if (choise.equals("3") || choise.equals("p")) {
                 user.setPesel();
-                isLeapYear = isLeapPESELyear(user.getYearOfBirth(), user);
+                if (isThisInt("" + user.getYearOfBirth())) {
+                    isLeapYear = isValidPESELyear(user.getYearOfBirth(), user);
+                } else {
+                    System.out.println("This is very wrong PESEL! ");
+                    isLeapYear = false;
+                }
             }
             System.out.println("You would like to add: ");
             System.out.println("User = " + user.toString());
@@ -102,14 +107,31 @@ public class CustomersRoom extends UsefulMethods {
         }
     }
 
-    private boolean isLeapPESELyear(int year, User user) {
-        if (isLeapYear(year)) {
-            user.setDateOfBirth(user.getYearOfBirth(), user.getMonthOfBirth(), user.getDayOfBirth());
-            return true;
-        } else {
-            System.out.println("This is not leap year! ");
-            return false;
-        }
-    }
+//    private boolean isValidPESELyear(int year, User user) {
+//        if (isLeapYear(year)) {
+//            if (user.getMonthOfBirth() == 2 && user.getDayOfBirth() < 30) {
+//                user.setDateOfBirth(user.getYearOfBirth(), user.getMonthOfBirth(), user.getDayOfBirth());
+//                return true;
+//            } else if(user.getMonthOfBirth() != 2){
+//                user.setDateOfBirth(user.getYearOfBirth(), user.getMonthOfBirth(), user.getDayOfBirth());
+//                return true;
+//            }
+//            else {
+//                System.out.println("This is not valid year! ");
+//                return false;
+//            }
+//        }
+//        if (!isLeapYear(year)) {
+//            if (user.getMonthOfBirth() == 2 && user.getDayOfBirth() < 29)
+//                user.setDateOfBirth(user.getYearOfBirth(), user.getMonthOfBirth(), user.getDayOfBirth());
+//            return true;
+//        } else if (user.getMonthOfBirth() != 2) {
+//            user.setDateOfBirth(user.getYearOfBirth(), user.getMonthOfBirth(), user.getDayOfBirth());
+//            return true;
+//        } else {
+//            System.out.println("This is not valid year! ");
+//            return false;
+//        }
+//    }
 }
 

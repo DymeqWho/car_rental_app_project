@@ -49,7 +49,7 @@ public abstract class UsefulMethods {
         return parsedInt;
     }
 
-   public double parseDoubleValidator() throws NumberFormatException {
+    public double parseDoubleValidator() throws NumberFormatException {
         Scanner scanner = new Scanner(System.in);
         String intForPars = scanner.nextLine();
         double parsedInt = -1.0;
@@ -153,5 +153,58 @@ public abstract class UsefulMethods {
             } else isThisInt = true;
         }
         return isThisInt;
+    }
+
+    public boolean isValidPESELyear(int year, User user) {
+        if (isLeapYear(year)) {
+            if (user.getMonthOfBirth() == 2 && user.getDayOfBirth() < 30) {
+                user.setDateOfBirth(user.getYearOfBirth(), user.getMonthOfBirth(), user.getDayOfBirth());
+                return true;
+            } else if (user.getMonthOfBirth() != 2) {
+                user.setDateOfBirth(user.getYearOfBirth(), user.getMonthOfBirth(), user.getDayOfBirth());
+                return true;
+            } else {
+                System.out.println("This is not valid year! ");
+                return false;
+            }
+        }
+        if (!isLeapYear(year)) {
+            if (user.getMonthOfBirth() == 2 && user.getDayOfBirth() < 29) {
+                user.setDateOfBirth(user.getYearOfBirth(), user.getMonthOfBirth(), user.getDayOfBirth());
+                return true;
+            } else if (user.getMonthOfBirth() != 2) {
+                user.setDateOfBirth(user.getYearOfBirth(), user.getMonthOfBirth(), user.getDayOfBirth());
+                return true;
+            } else {
+                System.out.println("This is not valid year! ");
+                return false;
+            }
+        }
+        return false;
+    }
+
+
+    public boolean isValidPESELyear(int year, int month, int day) {
+        if (isLeapYear(year)) {
+            if (month == 2 && day < 30) {
+                return true;
+            } else if (month != 2) {
+                return true;
+            } else {
+                System.out.println("I think you have made a grate mistake with this date! ");
+                return false;
+            }
+        }
+        if (!isLeapYear(year)) {
+            if (month == 2 && day < 29) {
+                return true;
+            } else if (month != 2) {
+                return true;
+            } else {
+                System.out.println("This is not valid day in this year! ");
+                return false;
+            }
+        }
+        return false;
     }
 }
