@@ -176,7 +176,7 @@ public abstract class UsefulMethods {
                 user.setDateOfBirth(user.getYearOfBirth(), user.getMonthOfBirth(), user.getDayOfBirth());
                 return true;
             } else {
-                System.out.println("This is not valid year! ");
+                System.out.println("***************************  This is not valid day in this year! ***************************");
                 return false;
             }
         }
@@ -191,7 +191,7 @@ public abstract class UsefulMethods {
             } else if (month != 2) {
                 return true;
             } else {
-                System.out.println("I think you have made a grate mistake with this date! ");
+                System.out.println("***************************  I think you have made a grate mistake with this date! ***************************");
                 return false;
             }
         }
@@ -201,7 +201,7 @@ public abstract class UsefulMethods {
             } else if (month != 2) {
                 return true;
             } else {
-                System.out.println("This is not valid day in this year! ");
+                System.out.println("***************************  This is not valid day in this year! ***************************");
                 return false;
             }
         }
