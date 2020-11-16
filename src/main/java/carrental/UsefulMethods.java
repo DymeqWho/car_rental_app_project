@@ -142,4 +142,16 @@ public abstract class UsefulMethods {
         return -1;
     }
 
+    public final boolean isThisInt(String string) {
+        boolean isThisInt = false;
+        char[] charArry = string.toCharArray();
+        for (char c : charArry) {
+            if (c < 48 || c > 57) {
+                System.out.println("This is not a number!");
+                isThisInt = false;
+                break;
+            } else isThisInt = true;
+        }
+        return isThisInt;
+    }
 }

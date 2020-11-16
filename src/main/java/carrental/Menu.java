@@ -59,7 +59,8 @@ public class Menu extends UsefulMethods {
                     System.out.println();
                     runMenu();
                 } else if (choise == 4) {
-                    System.out.println(customersRoom.getListOfActivatedUsers().toString());
+                    System.out.println("List of active users: ");
+                    customersRoom.showListOfActivatedUsers();
                     chooseOption();
                     System.out.println();
                     runMenu();
@@ -69,6 +70,8 @@ public class Menu extends UsefulMethods {
                     runMenu();
                 } else if (choise == 6) {
                     customersRoom.activateAUser(customersRoom.getListOfNotActivatedUsers());
+                    System.out.println();
+                    chooseOption();
                     System.out.println();
                     runMenu();
                 } else if (choise == 7) {

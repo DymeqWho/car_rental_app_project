@@ -72,15 +72,8 @@ public class User extends UsefulMethods {
                 charPeselLenght = charPesel.length; //checking how long is car arry
 
                 //checking if PESEL has only digits.
-                for (char c : charPesel) {
-                    if (c < 48 || c > 57) { //used ASCII table for digits only id.
-                        System.out.println("this is not a PESEL! PESEL has only 11 digits!");
-                        checking = false;
-                        break;
-                    } else {
-                        checking = true;
-                    }
-                }
+                checking = isThisInt(pesel);
+
                 //end of checking if PESEL has only digits. If it has only digits method will continue if not, it will
                 // ask for putting 11 digits PESEL until it will has only digits.
 

@@ -2,7 +2,7 @@ package carrental;
 
 import java.util.*;
 
-public class CustomersRoom {
+public class CustomersRoom extends UsefulMethods {
     private List<User> listOfNotActivatedUsers = new ArrayList<>();
     private List<User> listOfActivatedUsers = new ArrayList<>();
 
@@ -14,11 +14,21 @@ public class CustomersRoom {
     }
 
     public List<User> getListOfActivatedUsers() {
-        System.out.println("List of active users: ");
         if (listOfActivatedUsers.isEmpty()) {
             System.out.println("Is empty!");
+            return null;
         }
         return listOfActivatedUsers;
+    }
+
+    public void showListOfActivatedUsers() {
+        if (listOfActivatedUsers.isEmpty()) {
+            System.out.println("Is empty!");
+        } else {
+            for (int i = 0; i < listOfActivatedUsers.size(); i++) {
+                System.out.println(getListOfActivatedUsers().get(i));
+            }
+        }
     }
 
     public void addUserToListOfNotActivatedUsers() {
@@ -66,27 +76,31 @@ public class CustomersRoom {
 
     public void activateAUser(List<User> user) {
         Scanner scanner = new Scanner(System.in);
-        Map<Integer, String> mapOfNotActiveUsers = new HashMap<>();
+        System.out.println("List of Users: ");
         for (int i = 0; i < user.size(); i++) {
-            mapOfNotActiveUsers.put(i + 1, user.get(i).getNameLastName());
+            System.out.println((i + 1) + ": " + user.get(i).getNameLastName());
         }
-        if (mapOfNotActiveUsers.isEmpty()) {
+        if (listOfNotActivatedUsers.isEmpty()) {
             System.out.println("List is empty! Add first users!");
         } else {
-            System.out.println("List of Users: ");
-            //System.out.println(mapOfNotActiveUsers.toString().replace("=", ": "));
-            for (int i = 1; i < mapOfNotActiveUsers.size() + 1; i++) {
-                System.out.println(i + ": " + mapOfNotActiveUsers.get(i));
-            }
             System.out.print("Who you want to activate? Choose number: ");
-            String choise = scanner.nextLine();
-            int choiseInt = Integer.parseInt(choise);
-//            for (int i = 1; i < mapOfNotActiveUsers.size() + 1; i++){
-//                if(choiseInt == i){
-//                    listOfActivatedUsers = mapOfNotActiveUsers.get(i);
-//                }
+            do {
+                String choise = scanner.nextLine();
+                if (isThisInt(choise)) {
+                    int choiseInt = Integer.parseInt(choise);
+                    if (choiseInt < 0 || choiseInt > listOfNotActivatedUsers.size()) {
+                        System.out.println("User not available! Choose existing number: ");
+                    } else {
+                        listOfActivatedUsers.add(listOfNotActivatedUsers.get(choiseInt - 1));
+                        listOfNotActivatedUsers.remove(choiseInt - 1);
+                        System.out.println("List of activated users: ");
+                        showListOfActivatedUsers();
+                        break;
+                    }
+                }else System.out.print("Try again. Who you want to activate? Choose number: ");;
+            } while (true);
+
         }
     }
-
 }
 
