@@ -35,15 +35,13 @@ public class CustomersRoom extends UsefulMethods {
         System.out.println("Add new, not yet active user. ");
         Scanner scanner = new Scanner(System.in);
         User user = new User();
-
+        boolean isLeapYear = true;
         System.out.print("Set users name: ");
         user.setName(scanner.nextLine());
         System.out.print("Set " + user.getName() + " last name: ");
         user.setLastName(scanner.nextLine());
-        System.out.print("Set " + user.getNameLastName() + " PESEL: ");
         user.setPesel();
-        user.setDateOfBirth(user.getYearOfBirth(), user.getMonthOfBirth(), user.getDayOfBirth());
-
+        isLeapYear = isLeapPESELyear(user.getYearOfBirth(), user);
         String choise = "";
         do {
             if (choise.equals("1") || choise.equals("n")) {
@@ -54,7 +52,7 @@ public class CustomersRoom extends UsefulMethods {
                 user.setLastName(scanner.nextLine());
             } else if (choise.equals("3") || choise.equals("p")) {
                 user.setPesel();
-                user.setDateOfBirth(user.getYearOfBirth(), user.getMonthOfBirth(), user.getDayOfBirth());
+                isLeapYear = isLeapPESELyear(user.getYearOfBirth(), user);
             }
             System.out.println("You would like to add: ");
             System.out.println("User = " + user.toString());
@@ -71,7 +69,7 @@ public class CustomersRoom extends UsefulMethods {
                 System.out.print("Your choise is: ");
                 choise = scanner.nextLine().toLowerCase();
             }
-        } while (true);
+        } while (isLeapYear);
     }
 
     public void activateAUser(List<User> user) {
@@ -97,9 +95,20 @@ public class CustomersRoom extends UsefulMethods {
                         showListOfActivatedUsers();
                         break;
                     }
-                }else System.out.print("Try again. Who you want to activate? Choose number: ");;
+                } else System.out.print("Try again. Who you want to activate? Choose number: ");
+                ;
             } while (true);
 
+        }
+    }
+
+    private boolean isLeapPESELyear(int year, User user) {
+        if (isLeapYear(year)) {
+            user.setDateOfBirth(user.getYearOfBirth(), user.getMonthOfBirth(), user.getDayOfBirth());
+            return true;
+        } else {
+            System.out.println("This is not leap year! ");
+            return false;
         }
     }
 }

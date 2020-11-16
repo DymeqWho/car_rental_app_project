@@ -49,7 +49,7 @@ public abstract class UsefulMethods {
         return parsedInt;
     }
 
-    double parseDoubleValidator() throws NumberFormatException {
+   public double parseDoubleValidator() throws NumberFormatException {
         Scanner scanner = new Scanner(System.in);
         String intForPars = scanner.nextLine();
         double parsedInt = -1.0;
@@ -84,7 +84,7 @@ public abstract class UsefulMethods {
         } while (true);
     }
 
-    private boolean isLeapYear(int year) {
+    public boolean isLeapYear(int year) {
         if (year > 0 && year <= 9999) {
             boolean isBy4 = year % 4 == 0;
             boolean isBy100 = year % 100 == 0;
