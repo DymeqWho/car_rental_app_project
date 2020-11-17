@@ -1,14 +1,17 @@
 package carrental;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
 public class Garage extends UsefulMethods {
     private final List<Car> listOfNotRentedCars;
     private final List<Car> listOfRentedCars;
+    private HashMap<Integer, Car> mapOfNotRentedCars = new HashMap<>();
 
     public Garage() {
         this.listOfNotRentedCars = new ArrayList<>();
@@ -103,12 +106,56 @@ public class Garage extends UsefulMethods {
 
 
     public List<Car> getListOfNotRentedCars() {
-        System.out.println("List of available, not rented yet cars: ");
         return listOfNotRentedCars;
     }
 
     public void putCarToListOfNotRentedCars(List<Car> listOfNotRentedCars) {
         listOfNotRentedCars.add(createNewCar());
+    }
+
+    public void presentCars(){
+        System.out.println("List of available cars: ");
+        System.out.println();
+        if (listOfNotRentedCars.size() > 0) {
+            int i = 1;
+            for (Car car : listOfNotRentedCars) {
+                System.out.println("Number " + i + " " + car.toString());
+                i++;
+            }
+        } else System.out.println("There is no available car!");
+    }
+
+    public Car changeRentalPrice(List<Car> list) {
+
+        for (int i = 0; i < list.size(); i++) {
+            mapOfNotRentedCars.put(i + 1, list.get(i));
+        }
+        mapOfNotRentedCars.remove(0);
+        System.out.println("List of all available now cars: ");
+        for (int i = 1; i < mapOfNotRentedCars.size()+1; i++) {
+            System.out.println("index " + i + ": " + mapOfNotRentedCars.get(i).toString().replace("=", " index: "));
+        }
+        boolean finishIt = true;
+        int whichMark;
+        do {
+            System.out.print("Which car rental price you would like to change? Sign index: ");
+            whichMark = parseIntValidator();
+            if (whichMark <= mapOfNotRentedCars.size() && whichMark >= 1) {
+                System.out.println("Chosen car is: ");
+                System.out.println(mapOfNotRentedCars.get(whichMark));
+                finishIt = false;
+            } else {
+                System.out.println("There is no such car!");
+            }
+        } while (finishIt);
+        BigDecimal oldPrice = mapOfNotRentedCars.get(whichMark).getRentalPriseForOneDay();
+        System.out.print("Actual price is: " + oldPrice + ". What new price you would like to set?: ");
+        double newPrice = parseDoubleValidator();
+        BigDecimal newPriseBDRound = BigDecimal.valueOf(newPrice).setScale(2, RoundingMode.HALF_UP);
+        System.out.print("Old price was: " + oldPrice + ". New price is: " + newPriseBDRound);
+        mapOfNotRentedCars.get(whichMark).setRentalPriseForOneDay(newPrice);
+        System.out.println();
+        return mapOfNotRentedCars.get(whichMark);
     }
 }
 

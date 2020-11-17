@@ -15,7 +15,6 @@ public class CustomersRoom extends UsefulMethods {
 
     public List<User> getListOfActivatedUsers() {
         if (listOfActivatedUsers.isEmpty()) {
-            System.out.println("Is empty!");
             return null;
         }
         return listOfActivatedUsers;
@@ -81,7 +80,12 @@ public class CustomersRoom extends UsefulMethods {
         Scanner scanner = new Scanner(System.in);
         System.out.println("List of Users: ");
         for (int i = 0; i < user.size(); i++) {
-            System.out.println((i + 1) + ": " + user.get(i).getNameLastName());
+            boolean isValidAge = isSomeoneAdult(user.get(i).getDateOfBirth());
+            if (isValidAge) {
+                System.out.println((i + 1) + ": " + user.get(i).getNameLastName() + " is adult.");
+            } else {
+                System.out.println((i + 1) + ": " + user.get(i).getNameLastName() + " is under legal age!");
+            }
         }
         if (listOfNotActivatedUsers.isEmpty()) {
             System.out.println("List is empty! Add first users!");
@@ -94,44 +98,22 @@ public class CustomersRoom extends UsefulMethods {
                     if (choiseInt < 0 || choiseInt > listOfNotActivatedUsers.size()) {
                         System.out.println("User not available! Choose existing number: ");
                     } else {
-                        listOfActivatedUsers.add(listOfNotActivatedUsers.get(choiseInt - 1));
-                        listOfNotActivatedUsers.remove(choiseInt - 1);
-                        System.out.println("List of activated users: ");
-                        showListOfActivatedUsers();
-                        break;
+                        //need to valid if customer is legal in age!
+                        if (isSomeoneAdult(listOfNotActivatedUsers.get(choiseInt - 1).getDateOfBirth())) {
+                            listOfActivatedUsers.add(listOfNotActivatedUsers.get(choiseInt - 1));
+                            listOfNotActivatedUsers.remove(choiseInt - 1);
+                            System.out.println("List of activated users: ");
+                            showListOfActivatedUsers();
+                            break;
+                        } else {
+                            System.out.println("Chosen person is under legal age for driving car! Legal age is 18 years old!");
+                            break;
+                        }
                     }
                 } else System.out.print("Try again. Who you want to activate? Choose number: ");
-                ;
             } while (true);
 
         }
     }
-
-//    private boolean isValidPESELyear(int year, User user) {
-//        if (isLeapYear(year)) {
-//            if (user.getMonthOfBirth() == 2 && user.getDayOfBirth() < 30) {
-//                user.setDateOfBirth(user.getYearOfBirth(), user.getMonthOfBirth(), user.getDayOfBirth());
-//                return true;
-//            } else if(user.getMonthOfBirth() != 2){
-//                user.setDateOfBirth(user.getYearOfBirth(), user.getMonthOfBirth(), user.getDayOfBirth());
-//                return true;
-//            }
-//            else {
-//                System.out.println("This is not valid year! ");
-//                return false;
-//            }
-//        }
-//        if (!isLeapYear(year)) {
-//            if (user.getMonthOfBirth() == 2 && user.getDayOfBirth() < 29)
-//                user.setDateOfBirth(user.getYearOfBirth(), user.getMonthOfBirth(), user.getDayOfBirth());
-//            return true;
-//        } else if (user.getMonthOfBirth() != 2) {
-//            user.setDateOfBirth(user.getYearOfBirth(), user.getMonthOfBirth(), user.getDayOfBirth());
-//            return true;
-//        } else {
-//            System.out.println("This is not valid year! ");
-//            return false;
-//        }
-//    }
 }
 

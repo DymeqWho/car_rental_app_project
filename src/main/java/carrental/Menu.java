@@ -1,16 +1,12 @@
 package carrental;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Scanner;
 
 public class Menu extends UsefulMethods {
     Scanner scanner = new Scanner(System.in);
     Garage garage = new Garage();
     CustomersRoom customersRoom = new CustomersRoom();
-    HashMap<Integer, Car> mapOfNotRentedCars = new HashMap<>();
+    RentalOffice rentalOffice = new RentalOffice();
 
     private void callMenu() {
         System.out.println();
@@ -48,34 +44,28 @@ public class Menu extends UsefulMethods {
                 System.out.print("This is not a number! ");
             } finally {
                 if (choise == 1) {
-                    chooseOption(garage.getListOfNotRentedCars());
-                    System.out.println();
-                    runMenu();
+                    garage.presentCars();
+                    backToMenu();
                 } else if (choise == 2) {
-                    changeRentalPrice(garage.getListOfNotRentedCars());
-                    runMenu();
+                    garage.changeRentalPrice(garage.getListOfNotRentedCars());
+                    backToMenu();
                 } else if (choise == 3) {
                     garage.putCarToListOfNotRentedCars(garage.getListOfNotRentedCars());
-                    System.out.println();
-                    runMenu();
+                    backToMenu();
                 } else if (choise == 4) {
                     System.out.println("List of active users: ");
                     customersRoom.showListOfActivatedUsers();
-                    chooseOption();
-                    System.out.println();
-                    runMenu();
+                    backToMenu();
                 } else if (choise == 5) {
                     customersRoom.addUserToListOfNotActivatedUsers();
                     System.out.println();
                     runMenu();
                 } else if (choise == 6) {
                     customersRoom.activateAUser(customersRoom.getListOfNotActivatedUsers());
-                    System.out.println();
-                    chooseOption();
-                    System.out.println();
-                    runMenu();
+                    backToMenu();
                 } else if (choise == 7) {
-                    System.out.println("7.");
+                    rentalOffice.rentACar(garage.getListOfNotRentedCars(), customersRoom.getListOfActivatedUsers());
+                    backToMenu();
                 } else if (choise == 8) {
                     System.out.println("8.");
                 } else if (choise == 9) {
@@ -95,17 +85,6 @@ public class Menu extends UsefulMethods {
         while (choise <= 0 || choise > 12); // console will not ask about different number while number will be between 1-12.
     }
 
-    private void chooseOption(List<Car> list) {
-        System.out.println(list);
-        do {
-            System.out.print("Would you like to go back to menu? (Press \"1\" or \"y\"): ");
-            String option = scanner.nextLine();
-            if (option.equals("y") || option.equals("1"))
-                break;
-            else System.out.println("Wrong command. ");
-        } while (true);
-    }
-
     private void chooseOption() {
         do {
             System.out.print("Would you like to go back to menu? (Press \"1\" or \"y\"): ");
@@ -116,36 +95,10 @@ public class Menu extends UsefulMethods {
         } while (true);
     }
 
-
-    private Car changeRentalPrice(List<Car> list) {
-
-        for (int i = 0; i < list.size(); i++) {
-            mapOfNotRentedCars.put(i + 1, list.get(i));
-        }
-        mapOfNotRentedCars.remove(0);
-        System.out.println("List of all available now cars: ");
-        System.out.println(mapOfNotRentedCars.toString().replace("=", " index: "));
-        boolean finishIt = true;
-        int whichMark;
-        do {
-            System.out.print("Which car rental price you would like to change? Sign index: ");
-            whichMark = parseIntValidator();
-            if (whichMark <= mapOfNotRentedCars.size() && whichMark >= 1) {
-                System.out.println("Chosen car is: ");
-                System.out.println(mapOfNotRentedCars.get(whichMark));
-                finishIt = false;
-            } else {
-                System.out.println("There is no such car!");
-            }
-        } while (finishIt);
-        BigDecimal oldPrice = mapOfNotRentedCars.get(whichMark).getRentalPriseForOneDay();
-        System.out.print("Actual price is: " + oldPrice + ". What new price you would like to set?: ");
-        double newPrice = parseDoubleValidator();
-        BigDecimal newPriseBDRound = BigDecimal.valueOf(newPrice).setScale(2, RoundingMode.HALF_UP);
-        System.out.print("Old price was: " + oldPrice + ". New price is: " + newPriseBDRound);
-        mapOfNotRentedCars.get(whichMark).setRentalPriseForOneDay(newPrice);
-        return mapOfNotRentedCars.get(whichMark);
+    private void backToMenu() {
+        System.out.println();
+        chooseOption();
+        System.out.println();
+        runMenu();
     }
-
-
 }

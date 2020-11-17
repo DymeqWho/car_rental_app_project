@@ -1,5 +1,6 @@
 package carrental;
 
+import java.time.LocalDate;
 import java.util.Scanner;
 
 public abstract class UsefulMethods {
@@ -203,6 +204,22 @@ public abstract class UsefulMethods {
             } else {
                 System.out.println("***************************  This is not valid day in this year! ***************************");
                 return false;
+            }
+        }
+        return false;
+    }
+
+    public boolean isSomeoneAdult(LocalDate intrestingLocalDate) {
+        LocalDate now = LocalDate.now();
+        int yearNow = now.getYear();
+        int monthNow = now.getMonthValue();
+        int dayNow = now.getDayOfMonth();
+        int interestingYear = intrestingLocalDate.getYear();
+        int interestingMonth = intrestingLocalDate.lengthOfMonth();
+        int interestingDay = intrestingLocalDate.getDayOfMonth();
+        if (dayNow - interestingDay >= 0) {
+            if (monthNow - interestingMonth <= 0) {
+                return yearNow - interestingYear >= 18;
             }
         }
         return false;

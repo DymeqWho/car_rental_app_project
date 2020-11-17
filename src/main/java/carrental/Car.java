@@ -80,7 +80,7 @@ public class Car extends UsefulMethods {
                 ", Model:'" + model + '\'' +
                 ", Millage: " + millage +
                 ", Date of production: " + dateOfProduction +
-                ", Rental prise for one day: " + rentalPriseForOneDay + ";\n";
+                ", Rental prise for one day: " + rentalPriseForOneDay + ";";
     }
 
 }
