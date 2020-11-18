@@ -148,7 +148,7 @@ public abstract class UsefulMethods {
         char[] charArry = string.toCharArray();
         for (char c : charArry) {
             if (c < 48 || c > 57) {
-                System.out.println("This is not a number!");
+                System.out.print("This is not a number! ");
                 isThisInt = false;
                 break;
             } else isThisInt = true;

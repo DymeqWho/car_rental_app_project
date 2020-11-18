@@ -211,7 +211,7 @@ public class User extends UsefulMethods {
         if (isValidPESELyear(yearOfBirth, monthOfBirth, dayOfBirth))
             this.dateOfBirth = LocalDate.of(yearOfBirth, monthOfBirth, dayOfBirth);
         else{
-            System.out.println("This is very bad PESEL! ");
+            System.out.println("***************************  This is very bad PESEL! ***************************");
         }
     }
 
