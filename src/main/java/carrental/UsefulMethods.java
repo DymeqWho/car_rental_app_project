@@ -217,7 +217,7 @@ public abstract class UsefulMethods {
         int interestingYear = intrestingLocalDate.getYear();
         int interestingMonth = intrestingLocalDate.lengthOfMonth();
         int interestingDay = intrestingLocalDate.getDayOfMonth();
-        if (dayNow - interestingDay >= 0) {
+        if ((dayNow - interestingDay <= 0 && monthNow - interestingMonth <= 0) || dayNow - interestingDay >= 0 ) {
             if (monthNow - interestingMonth <= 0) {
                 return yearNow - interestingYear >= 18;
             }
