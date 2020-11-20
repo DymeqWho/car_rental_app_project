@@ -18,13 +18,10 @@ public class RentalOffice extends UsefulMethods {
 
         System.out.println("Rent a car!");
         System.out.println();
-        System.out.println("There is: available " + listOfNotRentedCarsSize + " car(s). Press 1 or \"c\" to see the list.");
+        System.out.println("There is: available " + listOfNotRentedCarsSize + " car(s). Press 1 or \"c\" to make operation on that list first.");
         if (listOfActiveUsers != null)
-            System.out.println("There is: " + listOfActiveUsersSize + " active user(s). Press 2 or \"u\" to see the list.");
-        else System.out.println("There is no available users! Add some first!");
-
-        System.out.println("Press 3 or \"b\" if ypu want to see both lists; car list and user list.");
-
+            System.out.println("There is: " + listOfActiveUsersSize + " active user(s). Press 2 or \"u\" to make operation on that list first.");
+        else System.out.println("2. There is no available users! Add some first!");
         System.out.println("Pres any other number to exit.");
         System.out.println();
 
@@ -38,44 +35,70 @@ public class RentalOffice extends UsefulMethods {
             if (isThisNumber) {
                 optionInt = Integer.parseInt(option);
                 break;
-            } else if (option.equals("c") || option.equals("u") || option.equals("b")) {
+            } else if (option.equals("c") || option.equals("u")) {
                 break;
             } else System.out.println("This is not valid character!");
         } while (true);
 
-        int choiceCar;
-        int choiceUser;
-        String messageNumber = "Which car you want to rent? Put a number: ";
-        String messageUser = "Who do you want to rent a car? Put a number: ";
+        int choiceCar = 0;
+        int choiceUser = 0;
+        String messageNumber = "Which car you want to rent? If you want to exit, press 0. Put a number: ";
+        String messageUser = "Who do you want to rent a car? If you want to exit, press 0. Put a number: ";
 
-        do {
-            if (optionInt == 1 || option.equals("c")) {
-                showAvailableCars(listOfNotRentedCars);
-                do {
-                    choiceCar = whichNumberYouWantToPeek(listOfNotRentedCarsSize, messageNumber);
-                    if (choiceCar > 0) {
-                        break;
-                    } else {
-                        System.out.println("Choose another number! ");
-                    }
-                } while (true);
-                System.out.println(chosenObject(choiceCar, listOfNotRentedCars, listOfNotRentedCarsSize));
-                break;
+        if (optionInt == 1 || option.equals("c")) {
+            choiceCar = returnWhichCarIsOfficiallyChosen(listOfNotRentedCars, listOfNotRentedCarsSize, messageNumber);
+            System.out.println("For who do you want to rent a car? ");
+            if (listOfActiveUsers == null) {
+                System.out.println("There is no one active for who you can rent a car! Add first someone to Active Users list!");
+            } else {
+                choiceUser = returnWhichUserIsOfficiallyChosen(listOfActiveUsers, messageUser, listOfActiveUsersSize);
             }
-        } while (true);
+        }
 
         if (optionInt == 2 || option.equals("u")) {
-            showListOfAvailableUsers(listOfActiveUsers);
-            choiceUser = whichNumberYouWantToPeek(listOfActiveUsersSize, messageUser);
-        }
-        if (optionInt == 3 || option.equals("b")) {
-            showAvailableCars(listOfNotRentedCars);
-            showListOfAvailableUsers(listOfActiveUsers);
-            choiceCar = whichNumberYouWantToPeek(listOfNotRentedCarsSize, messageNumber);
-            choiceUser = whichNumberYouWantToPeek(listOfActiveUsersSize, messageUser);
+            choiceUser = returnWhichUserIsOfficiallyChosen(listOfActiveUsers, messageUser, listOfActiveUsersSize);
         }
     }
 
+    private int returnWhichCarIsOfficiallyChosen(List<Car> listOfNotRentedCars, int listOfNotRentedCarsSize, String messageNumber) {
+        int choiceCar;
+        showAvailableCars(listOfNotRentedCars);
+        do {
+            choiceCar = whichNumberYouWantToPeek(listOfNotRentedCarsSize, messageNumber);
+            if (listOfNotRentedCars.isEmpty()) {
+                System.out.println("List is empty. Now you will exit.");
+                choiceCar = 0;
+                break;
+            }
+            if (choiceCar > 0) {
+                break;
+            } else {
+                System.out.println("Choose another number! ");
+            }
+        } while (true);
+        System.out.println(chosenObject(choiceCar, listOfNotRentedCars, listOfNotRentedCarsSize));
+        return choiceCar;
+    }
+
+    private int returnWhichUserIsOfficiallyChosen(List<User> listOfActiveUsers, String messageUser, int listOfActiveUsersSize) {
+        int choiceUser;
+        showListOfAvailableUsers(listOfActiveUsers);
+        do {
+            choiceUser = whichNumberYouWantToPeek(listOfActiveUsersSize, messageUser);
+            if (listOfActiveUsers == null) {
+                System.out.println("List is empty. Now you will exit.");
+                choiceUser = 0;
+                break;
+            }
+            if (choiceUser > 0) {
+                break;
+            } else {
+                System.out.println("Choose another number! ");
+            }
+        } while (true);
+        System.out.println(chosenObject(choiceUser, listOfActiveUsers));
+        return choiceUser;
+    }
 
     private void showAvailableCars(List<Car> listOfNotRentedCars) {
         int listOfNotRentedCarsSize = listOfNotRentedCars.size();
@@ -115,20 +138,38 @@ public class RentalOffice extends UsefulMethods {
     private int whichNumberYouWantToPeek(int listSize, String message) {
         do {
             System.out.print(message);
-            int choiceCar = whatIsYourChoise();
-            if (choiceCar <= listSize) {
-                return choiceCar;
+            int choiceNumber = whatIsYourChoise();
+            if (choiceNumber <= listSize) {
+                return choiceNumber;
             } else System.out.print("This is invalid number! ");
         } while (true);
     }
 
     private int chosenObject(int whichNumberOfChoice, List<Car> something, int sizeOfList) {
         for (int i = 0; i < sizeOfList; i++) {
-            if (whichNumberOfChoice-1 == i) {
-                System.out.print("Chosen is: " + something.get(i).toString() + " number: ");
-                return i;
+            if (whichNumberOfChoice - 1 == i) {
+                System.out.print("Chosen is: " + something.get(i).toString() + "; number: ");
+                return i + 1;
             }
         }
-        return 100;
+        return -1;
     }
+
+    private int chosenObject(int whichNumberOfChoice, List<User> something) {
+        int sizeOfList;
+        if (something == null) {
+            sizeOfList = 0;
+        } else {
+            sizeOfList = something.size();
+        }
+        for (int i = 0; i < sizeOfList; i++) {
+            if (whichNumberOfChoice - 1 == i) {
+                System.out.print("Chosen is: " + something.get(i).toString() + "; number: ");
+                return i + 1;
+            }
+        }
+        return -1;
+    }
+
+
 }
