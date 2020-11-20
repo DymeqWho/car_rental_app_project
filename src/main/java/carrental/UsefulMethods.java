@@ -209,14 +209,14 @@ public abstract class UsefulMethods {
         return false;
     }
 
-    public boolean isSomeoneAdult(LocalDate intrestingLocalDate) {
+    public boolean isSomeoneAdult(LocalDate interestingLocalDate) {
         LocalDate now = LocalDate.now();
         int yearNow = now.getYear();
         int monthNow = now.getMonthValue();
         int dayNow = now.getDayOfMonth();
-        int interestingYear = intrestingLocalDate.getYear();
-        int interestingMonth = intrestingLocalDate.lengthOfMonth();
-        int interestingDay = intrestingLocalDate.getDayOfMonth();
+        int interestingYear = interestingLocalDate.getYear();
+        int interestingMonth = interestingLocalDate.lengthOfMonth();
+        int interestingDay = interestingLocalDate.getDayOfMonth();
         if ((dayNow - interestingDay <= 0 && monthNow - interestingMonth <= 0) || dayNow - interestingDay >= 0 ) {
             if (monthNow - interestingMonth <= 0) {
                 return yearNow - interestingYear >= 18;

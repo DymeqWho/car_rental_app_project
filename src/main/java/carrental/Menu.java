@@ -17,7 +17,7 @@ public class Menu extends UsefulMethods {
         System.out.println("5.  Add user: ");
         System.out.println("6.  Activate a user: ");
         System.out.println("7.  Rent a car: ");
-        System.out.println("8.  List all rented cars: ");
+        System.out.println("8.  List of all rented cars: ");
         System.out.println("9.  Return a car: ");
         System.out.println("10. Display monthly report: ");
         System.out.println("11. Display yearly report: ");
@@ -67,7 +67,8 @@ public class Menu extends UsefulMethods {
                     rentalOffice.rentACar(garage.getListOfNotRentedCars(), customersRoom.getListOfActivatedUsers());
                     backToMenu();
                 } else if (choise == 8) {
-                    System.out.println("8.");
+                    rentalOffice.showListOfAllRentedCars();
+                    backToMenu();
                 } else if (choise == 9) {
                     System.out.println("9.");
                 } else if (choise == 10) {

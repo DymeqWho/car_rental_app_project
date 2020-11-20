@@ -10,14 +10,12 @@ import java.util.Scanner;
 
 public class Garage extends UsefulMethods {
     private final List<Car> listOfNotRentedCars;
-    private final List<Car> listOfRentedCars;
     private HashMap<Integer, Car> mapOfNotRentedCars = new HashMap<>();
 
     public Garage() {
         this.listOfNotRentedCars = new ArrayList<>();
         this.listOfNotRentedCars.add(0, firstCar());
         this.listOfNotRentedCars.add(1, secondCar());
-        this.listOfRentedCars = new ArrayList<>();
     }
 
     public Car createNewCar() {
@@ -113,7 +111,7 @@ public class Garage extends UsefulMethods {
         listOfNotRentedCars.add(createNewCar());
     }
 
-    public void presentCars(){
+    public void presentCars() {
         System.out.println("List of available cars: ");
         System.out.println();
         if (listOfNotRentedCars.size() > 0) {
@@ -132,7 +130,7 @@ public class Garage extends UsefulMethods {
         }
         mapOfNotRentedCars.remove(0);
         System.out.println("List of all available now cars: ");
-        for (int i = 1; i < mapOfNotRentedCars.size()+1; i++) {
+        for (int i = 1; i < mapOfNotRentedCars.size() + 1; i++) {
             System.out.println("index " + i + ": " + mapOfNotRentedCars.get(i).toString().replace("=", " index: "));
         }
         boolean finishIt = true;
