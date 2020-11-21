@@ -20,12 +20,8 @@ public class RentalOffice extends UsefulMethods {
     public RentalOffice() {
     }
 
-    public RentalOffice(Car rentedCar, User client, LocalDate dateOfRent, BigDecimal priceForRentForClient, int howManyDays) {
-        this.rentedCar = rentedCar;
-        this.client = client;
-        this.dateOfRent = dateOfRent;
-        this.priceForRentForClient = priceForRentForClient;
-        this.howManyDays = howManyDays;
+    public RentalOffice(Car rentedCar, User client, LocalDate dateOfRent, BigDecimal priceForRentForClient, int howManyDays, BigDecimal income) {
+        this(rentedCar, client, dateOfRent, LocalDate.now(), priceForRentForClient, howManyDays, income);
     }
 
     public RentalOffice(Car rentedCar, User client, LocalDate dateOfRent, LocalDate dateOfReturn, BigDecimal priceForRentForClient, int howManyDays, BigDecimal income) {
@@ -115,6 +111,7 @@ public class RentalOffice extends UsefulMethods {
         Car choiceCar = null;
         User choiceUser = null;
         String confirmation = "";
+        boolean areListsFull = false;
 
         do {
             System.out.println("Rent a car!");
@@ -128,111 +125,175 @@ public class RentalOffice extends UsefulMethods {
 
             String option;
             int optionInt = 0;
+            boolean stop = true;
             do {
-                System.out.print("What is your option?: ");
-                option = scanner.nextLine().toLowerCase();
-                boolean isThisNumber = isThisInt(option);
+                do {
+                    System.out.print("What is your option?: ");
+                    option = scanner.nextLine().toLowerCase();
+                    boolean isThisNumber = isThisInt(option);
 
-                if (isThisNumber) {
-                    optionInt = Integer.parseInt(option);
-                    break;
-                } else if (option.equals("c") || option.equals("u")) {
-                    break;
-                } else System.out.println("This is not valid character!");
-            } while (true);
+                    if (isThisNumber) {
+                        optionInt = Integer.parseInt(option);
+                        break;
+                    } else if (option.equals("c") || option.equals("u")) {
+                        break;
+                    } else System.out.println("This is not valid character!");
+                } while (true);
 
-            String messageNumber = "Which car you want to rent? ";
-            String messageUser = "Who do you want to rent a car? ";
-            String noActiveUsersMessage = "There is no one active for who you can rent a car! Add first someone to Active Users list!";
-            String noAvailableCars = "There is no available cars! ";
+                String messageNumber = "Which car you want to rent? ";
+                String messageUser = "Who do you want to rent a car? ";
+                String noActiveUsersMessage = "There is no one active for who you can rent a car! Add first someone to Active Users list!";
+                String noAvailableCars = "There is no available cars! ";
 
-            if (optionInt == 1 || option.equals("c")) {
-                if (listOfNotRentedCars.isEmpty()) {
-                    System.out.println(noAvailableCars);
-                } else {
-                    if (listOfActiveUsers == null) {
+                if (optionInt == 1 || option.equals("c")) {
+                    if (listOfNotRentedCars.isEmpty()) {
+                        areListsFull = false;
+                        System.out.println(noAvailableCars);
+                        break;
+                    } else if (listOfActiveUsers == null) {
+                        areListsFull = false;
                         System.out.println(noActiveUsersMessage);
+                        break;
                     } else {
                         choiceCar = returnWhichCarIsOfficiallyChosen(listOfNotRentedCars, listOfNotRentedCarsSize, messageNumber);
                         System.out.println("For who do you want to rent a car? ");
                         choiceUser = returnWhichUserIsOfficiallyChosen(listOfActiveUsers, messageUser, listOfActiveUsersSize);
+                        areListsFull = true;
+                        break;
                     }
-                }
-            }
-
-            if (optionInt == 2 || option.equals("u")) {
-                if (listOfActiveUsers == null) {
-                    System.out.println(noActiveUsersMessage);
-                } else {
-                    if (listOfNotRentedCars.isEmpty()) {
+                } else if (optionInt == 2 || option.equals("u")) {
+                    if (listOfActiveUsers == null) {
+                        areListsFull = false;
+                        System.out.println(noActiveUsersMessage);
+                        break;
+                    } else if (listOfNotRentedCars.isEmpty()) {
+                        areListsFull = false;
                         System.out.println(noAvailableCars);
+                        break;
                     } else {
                         choiceUser = returnWhichUserIsOfficiallyChosen(listOfActiveUsers, messageUser, listOfActiveUsersSize);
                         System.out.println("Which car you want to rent for " + choiceUser.getNameLastName() + "? ");
                         choiceCar = returnWhichCarIsOfficiallyChosen(listOfNotRentedCars, listOfNotRentedCarsSize, messageNumber);
+                        areListsFull = true;
+                        break;
                     }
                 }
-            }
-
-            if (optionInt != 1 && optionInt != 2 && !option.equals("c") && !option.equals("u")) {
-                break;
-            }
-            System.out.println();
-            assert choiceUser != null;
-            String carMarkModel = choiceCar.getMark() + " " + choiceCar.getModel();
-            System.out.println("You want to rent for " + choiceUser.getNameLastName() + " car: " + carMarkModel
-                    + " from year: " + choiceCar.getDateOfProduction().getYear() + ". Is this correct?");
-            System.out.print("Choose \"y\" or \"1\" if \"yes\". If \"no\" choose anything else: ");
-            String yesOrNo = scanner.nextLine();
-            if (yesOrNo.equals("y") || yesOrNo.equals("1")) {
-                do { // need investigation if this is really useless. 
+            } while (true);
+            if (areListsFull = true && choiceUser != null) {
+                System.out.println();
+                String carMarkModel;
+                carMarkModel = choiceCar.getMark() + " " + choiceCar.getModel();
+                System.out.println("You want to rent for " + choiceUser.getNameLastName() + " car: " + carMarkModel
+                        + " from year: " + choiceCar.getDateOfProduction().getYear() + ". Is this correct?");
+                System.out.print("Choose \"y\" or \"1\" if \"yes\". If \"no\" choose anything else: ");
+                String yesOrNo = scanner.nextLine();
+                if (yesOrNo.equals("y") || yesOrNo.equals("1")) {
                     do {
-                        System.out.print("For how many days " + choiceUser.getNameLastName() + " would like to rent a car?: ");
-                        String howManyDays = scanner.nextLine();
-                        if (isThisInt(howManyDays) && !howManyDays.equals("0")) {
-                            setHowManyDays(Integer.parseInt(howManyDays));
-                            break;
-                        } else System.out.println("This is not valid count of days! ");
+                        do {
+                            System.out.print("For how many days " + choiceUser.getNameLastName() + " would like to rent a car?: ");
+                            String howManyDays = scanner.nextLine();
+                            if (isThisInt(howManyDays) && !howManyDays.equals("0")) {
+                                setHowManyDays(Integer.parseInt(howManyDays));
+                                break;
+                            } else System.out.println("This is not valid count of days! ");
+                        } while (true);
+                        costOfRentWithAllBonuses(choiceUser, choiceCar);
+                        BigDecimal cost = getPriceForRentForClient().multiply(BigDecimal.valueOf(howManyDays));
+                        System.out.println(choiceUser.getNameLastName() + " wish to rent a car " + carMarkModel + " for "
+                                + " * " + getHowManyDays() + " * days and this will cost: " + cost + ", is this correct? ");
+                        System.out.print("Choose \"y\" or \"1\" if \"yes\". If \"no\" choose anything else: ");
+                        confirmation = scanner.nextLine();
+                        if (confirmation.equals("y") || confirmation.equals("1")) {
+                            setRentedCar(choiceCar);
+                            setClient(choiceUser);
+                            setIncome(cost);
+                            setDateOfRent(LocalDate.now());
+                        } else {
+                            System.out.println("You did not confirm for how many days should car be rented!");
+                        }
+                        break;
                     } while (true);
-                    System.out.println(choiceUser.getNameLastName() + " wish to rent a car " + carMarkModel + " for "
-                            + " * " + getHowManyDays() + " *  days is this correct? ");
-                    System.out.print("Choose \"y\" or \"1\" if \"yes\". If \"no\" choose anything else: ");
-                    confirmation = scanner.nextLine();
-                    if (confirmation.equals("y") || confirmation.equals("1")) {
-                        setRentedCar(choiceCar);
-                        setClient(choiceUser);
-                        BigDecimal bonusForOlderThan40 = BigDecimal.ZERO;
-                        BigDecimal bonusForMoreThan100 = BigDecimal.ZERO;
-                        if (isOlderThan40(choiceUser)) {
-                            bonusForOlderThan40 = choiceCar.getRentalPriseForOneDay().multiply(BigDecimal.valueOf(0.1));
-                        }
-                        if (choiceUser.getNumberOfRentedCars() > 100) {
-                            bonusForMoreThan100 = choiceCar.getRentalPriseForOneDay().multiply(BigDecimal.valueOf(0.1));
-                        }
-                        setPriceForRentForClient(choiceCar.getRentalPriseForOneDay().subtract(bonusForOlderThan40).subtract(bonusForMoreThan100));
-                        break;
-                    } else {
-                        System.out.println("You did not confirm for how many days should car be rented!");
-                        break;
-                    }
-                } while (true); // need investigation if this is really useless.
+                    break;
+                }
+                break;
             }
             break;
         } while (true);
+
+
         System.out.println("Operation: ");
         if (confirmation.equals("y") || confirmation.equals("1")) {
-            listOfRentedCars.add(new RentalOffice(rentedCar, client, LocalDate.now(), priceForRentForClient, howManyDays));
+            choiceUser.setNumberOfRentedCars((choiceUser.getNumberOfRentedCars()) + 1);
+            listOfRentedCars.add(new RentalOffice(rentedCar, client, LocalDate.now(), priceForRentForClient, howManyDays, income));
             listOfNotRentedCars.remove(choiceCar);
             for (int i = listOfRentedCars.size() - 1; i >= 0; ) {
                 System.out.println("Car: " + listOfRentedCars.get(i).getRentedCar().toString());
                 System.out.println("Client: " + listOfRentedCars.get(i).getClient().toString());
                 System.out.println("From date: " + listOfRentedCars.get(i).getDateOfRent());
-                System.out.println("Price for that client after all bonuses: " + listOfRentedCars.get(i).getPriceForRentForClient());
+                System.out.println("Daily price for that client after all bonuses included: " + listOfRentedCars.get(i).getPriceForRentForClient());
                 System.out.println("How many days of rental: " + listOfRentedCars.get(i).getHowManyDays());
+                System.out.println("Total payment is: " + listOfRentedCars.get(i).getIncome());
                 break;
             }
         } else {
             System.out.println("did not succeed!");
+        }
+    }
+
+    public void returnCarFromRental(List<RentalOffice> rentalOffices, List<Car> listOfNotRentedCars) {
+        Scanner scanner = new Scanner(System.in);
+        Car car = null;
+        int indexNumber;
+        for (int i = 0; i < rentalOffices.size(); i++) {
+            car = rentalOffices.get(i).getRentedCar();
+            System.out.println("Index: " + (i + 1) + car.toString());
+        }
+        do {
+            if (rentalOffices.isEmpty()) {
+                System.out.println("You have not yet rent any car!");
+                break;
+            } else {
+                System.out.print("Which car you want to return? If you resign from operation pres \"r\" or \"0\": ");
+                String whichCarYouWantToReturn = scanner.nextLine();
+                if (whichCarYouWantToReturn.equals("r") || whichCarYouWantToReturn.equals("0")) {
+                    System.out.println("You resign!");
+                    break;
+                } else if (isThisInt(whichCarYouWantToReturn)) {
+                    indexNumber = Integer.parseInt(whichCarYouWantToReturn);
+                    System.out.println("Car you just returned is: ");
+                    for (int i = indexNumber - 1; i <= rentalOffices.size(); ) {
+                        car = rentalOffices.get(i).getRentedCar();
+                        System.out.println("Index: " + (i + 1) + car.toString());
+                        listOfNotRentedCars.add(car);
+                        rentalOffices.remove(indexNumber-1);
+                        break;
+                    }
+                    break;
+                } else {
+                    System.out.println("You did not peak a car!");
+                }
+            }
+        }
+        while (true);
+    }
+
+    private void costOfRentWithAllBonuses(User choiceUser, Car choiceCar) {
+        BigDecimal bonusForOlderThan40 = BigDecimal.ZERO;
+        BigDecimal bonusForMoreThan100 = BigDecimal.ZERO;
+        String clientName = "Client " + choiceUser.getNameLastName();
+        if (isSomeoneAdult(choiceUser.getDateOfBirth(), 40)) {
+            System.out.println(clientName + " is over 40 years old.");
+            bonusForOlderThan40 = choiceCar.getRentalPriseForOneDay().multiply(BigDecimal.valueOf(0.1));
+        } else {
+            System.out.println(clientName + " is younger than 40 years old.");
+        }
+        if (choiceUser.getNumberOfRentedCars() > 100) {
+            System.out.println(clientName + " has rented over 100 cars from our company.");
+            bonusForMoreThan100 = choiceCar.getRentalPriseForOneDay().multiply(BigDecimal.valueOf(0.1));
+        } else {
+            System.out.println(clientName + " has already rented: " + choiceUser.getNumberOfRentedCars() + " cars from our company.");
+
+            setPriceForRentForClient(choiceCar.getRentalPriseForOneDay().subtract(bonusForOlderThan40).subtract(bonusForMoreThan100));
         }
     }
 
@@ -251,25 +312,8 @@ public class RentalOffice extends UsefulMethods {
         }
     }
 
-
-    private boolean isOlderThan40(User user) {
-        LocalDate interestingLocalDate = user.getDateOfBirth();
-        LocalDate now = LocalDate.now();
-        int yearNow = now.getYear();
-        int monthNow = now.getMonthValue();
-        int dayNow = now.getDayOfMonth();
-        int interestingYear = interestingLocalDate.getYear();
-        int interestingMonth = interestingLocalDate.lengthOfMonth();
-        int interestingDay = interestingLocalDate.getDayOfMonth();
-        if ((dayNow - interestingDay <= 0 && monthNow - interestingMonth <= 0) || dayNow - interestingDay >= 0) {
-            if (monthNow - interestingMonth <= 0) {
-                return yearNow - interestingYear >= 40;
-            }
-        }
-        return false;
-    }
-
-    private Car returnWhichCarIsOfficiallyChosen(List<Car> listOfNotRentedCars, int listOfNotRentedCarsSize, String messageNumber) {
+    private Car returnWhichCarIsOfficiallyChosen(List<Car> listOfNotRentedCars,
+                                                 int listOfNotRentedCarsSize, String messageNumber) {
         int choiceCar;
         showAvailableCars(listOfNotRentedCars);
         do {
@@ -287,7 +331,8 @@ public class RentalOffice extends UsefulMethods {
         return chosenObject(choiceCar, listOfNotRentedCars, listOfNotRentedCarsSize);
     }
 
-    private User returnWhichUserIsOfficiallyChosen(List<User> listOfActiveUsers, String messageUser, int listOfActiveUsersSize) {
+    private User returnWhichUserIsOfficiallyChosen(List<User> listOfActiveUsers, String messageUser,
+                                                   int listOfActiveUsersSize) {
         int choiceUser;
         showListOfAvailableUsers(listOfActiveUsers);
         do {
@@ -303,7 +348,6 @@ public class RentalOffice extends UsefulMethods {
             }
         } while (true);
         return chosenObject(choiceUser, listOfActiveUsers);
-
     }
 
     private void showAvailableCars(List<Car> listOfNotRentedCars) {

@@ -209,7 +209,7 @@ public abstract class UsefulMethods {
         return false;
     }
 
-    public boolean isSomeoneAdult(LocalDate interestingLocalDate) {
+    public boolean isSomeoneAdult(LocalDate interestingLocalDate, int age) {
         LocalDate now = LocalDate.now();
         int yearNow = now.getYear();
         int monthNow = now.getMonthValue();
@@ -219,7 +219,7 @@ public abstract class UsefulMethods {
         int interestingDay = interestingLocalDate.getDayOfMonth();
         if ((dayNow - interestingDay <= 0 && monthNow - interestingMonth <= 0) || dayNow - interestingDay >= 0 ) {
             if (monthNow - interestingMonth <= 0) {
-                return yearNow - interestingYear >= 18;
+                return yearNow - interestingYear >= age;
             }
         }
         return false;

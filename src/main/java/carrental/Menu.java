@@ -70,7 +70,8 @@ public class Menu extends UsefulMethods {
                     rentalOffice.showListOfAllRentedCars();
                     backToMenu();
                 } else if (choise == 9) {
-                    System.out.println("9.");
+                    rentalOffice.returnCarFromRental(rentalOffice.getListOfRentedCars(), garage.getListOfNotRentedCars());
+                    backToMenu();
                 } else if (choise == 10) {
                     System.out.println("10.");
                 } else if (choise == 11) {
@@ -86,19 +87,14 @@ public class Menu extends UsefulMethods {
         while (choise <= 0 || choise > 12); // console will not ask about different number while number will be between 1-12.
     }
 
-    private void chooseOption() {
-        do {
-            System.out.print("Would you like to go back to menu? (Press \"1\" or \"y\"): ");
-            String option = scanner.nextLine();
-            if (option.equals("y") || option.equals("1"))
-                break;
-            else System.out.println("Wrong command. ");
-        } while (true);
+    private void enterForGoingBackToMenu() {
+            System.out.print("Pres enter for going back to menu: ");
+            scanner.nextLine();
     }
 
     private void backToMenu() {
         System.out.println();
-        chooseOption();
+        enterForGoingBackToMenu();
         System.out.println();
         runMenu();
     }

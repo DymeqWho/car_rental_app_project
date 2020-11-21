@@ -80,7 +80,7 @@ public class CustomersRoom extends UsefulMethods {
         Scanner scanner = new Scanner(System.in);
         System.out.println("List of Users: ");
         for (int i = 0; i < user.size(); i++) {
-            boolean isValidAge = isSomeoneAdult(user.get(i).getDateOfBirth());
+            boolean isValidAge = isSomeoneAdult(user.get(i).getDateOfBirth(), 18);
             if (isValidAge) {
                 System.out.println((i + 1) + ": " + user.get(i).getNameLastName() + " is adult.");
             } else {
@@ -99,7 +99,7 @@ public class CustomersRoom extends UsefulMethods {
                         System.out.println("User not available! Choose existing number: ");
                     } else {
                         //need to valid if customer is legal in age!
-                        if (isSomeoneAdult(listOfNotActivatedUsers.get(choiseInt - 1).getDateOfBirth())) {
+                        if (isSomeoneAdult(listOfNotActivatedUsers.get(choiseInt - 1).getDateOfBirth(),18)) {
                             listOfActivatedUsers.add(listOfNotActivatedUsers.get(choiseInt - 1));
                             listOfNotActivatedUsers.remove(choiseInt - 1);
                             System.out.println("List of activated users: ");
