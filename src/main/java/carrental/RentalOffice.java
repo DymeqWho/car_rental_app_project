@@ -134,10 +134,13 @@ public class RentalOffice extends UsefulMethods {
 
                     if (isThisNumber) {
                         optionInt = Integer.parseInt(option);
+                        stop = true;
                         break;
                     } else if (option.equals("c") || option.equals("u")) {
                         break;
-                    } else System.out.println("This is not valid character!");
+                    } else {
+                        System.out.println("This is not valid character!");
+                    }
                 } while (true);
 
                 String messageNumber = "Which car you want to rent? ";
@@ -175,6 +178,10 @@ public class RentalOffice extends UsefulMethods {
                         System.out.println("Which car you want to rent for " + choiceUser.getNameLastName() + "? ");
                         choiceCar = returnWhichCarIsOfficiallyChosen(listOfNotRentedCars, listOfNotRentedCarsSize, messageNumber);
                         areListsFull = true;
+                        break;
+                    }
+                } else {
+                    if(!option.equals("c") || !option.equals("u") && optionInt!=1 && optionInt!=2){
                         break;
                     }
                 }
@@ -265,7 +272,7 @@ public class RentalOffice extends UsefulMethods {
                         car = rentalOffices.get(i).getRentedCar();
                         System.out.println("Index: " + (i + 1) + car.toString());
                         listOfNotRentedCars.add(car);
-                        rentalOffices.remove(indexNumber-1);
+                        rentalOffices.remove(indexNumber - 1);
                         break;
                     }
                     break;
@@ -282,13 +289,13 @@ public class RentalOffice extends UsefulMethods {
         BigDecimal bonusForMoreThan100 = BigDecimal.ZERO;
         String clientName = "Client " + choiceUser.getNameLastName();
         if (isSomeoneAdult(choiceUser.getDateOfBirth(), 40)) {
-            System.out.println(clientName + " is over 40 years old.");
+            System.out.println(clientName + " is over 40 years old and gets a 10% discount!");
             bonusForOlderThan40 = choiceCar.getRentalPriseForOneDay().multiply(BigDecimal.valueOf(0.1));
         } else {
             System.out.println(clientName + " is younger than 40 years old.");
         }
         if (choiceUser.getNumberOfRentedCars() > 100) {
-            System.out.println(clientName + " has rented over 100 cars from our company.");
+            System.out.println(clientName + " has rented over 100 cars from our company and gets a 10% discount!");
             bonusForMoreThan100 = choiceCar.getRentalPriseForOneDay().multiply(BigDecimal.valueOf(0.1));
         } else {
             System.out.println(clientName + " has already rented: " + choiceUser.getNumberOfRentedCars() + " cars from our company.");
