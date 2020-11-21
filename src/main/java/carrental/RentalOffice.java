@@ -98,8 +98,7 @@ public class RentalOffice extends UsefulMethods {
         this.income = income;
     }
 
-    //This method should expand!
-    public void rentACar(List<Car> listOfNotRentedCars, List<User> listOfActiveUsers) throws NullPointerException {
+    public void rentACar(List<Car> listOfNotRentedCars, List<User> listOfActiveUsers, List<Bookkeeping> listOfOperations) throws NullPointerException {
         Scanner scanner = new Scanner(System.in);
         int listOfNotRentedCarsSize = listOfNotRentedCars.size();
         int listOfActiveUsersSize;
@@ -159,7 +158,7 @@ public class RentalOffice extends UsefulMethods {
                         break;
                     } else {
                         choiceCar = returnWhichCarIsOfficiallyChosen(listOfNotRentedCars, listOfNotRentedCarsSize, messageNumber);
-                        System.out.println("For who do you want to rent a car? ");
+                        System.out.println("For who do you want to rent a car?: ");
                         choiceUser = returnWhichUserIsOfficiallyChosen(listOfActiveUsers, messageUser, listOfActiveUsersSize);
                         areListsFull = true;
                         break;
@@ -175,13 +174,13 @@ public class RentalOffice extends UsefulMethods {
                         break;
                     } else {
                         choiceUser = returnWhichUserIsOfficiallyChosen(listOfActiveUsers, messageUser, listOfActiveUsersSize);
-                        System.out.println("Which car you want to rent for " + choiceUser.getNameLastName() + "? ");
+                        System.out.println("Which car you want to rent for " + choiceUser.getNameLastName() + "?: ");
                         choiceCar = returnWhichCarIsOfficiallyChosen(listOfNotRentedCars, listOfNotRentedCarsSize, messageNumber);
                         areListsFull = true;
                         break;
                     }
                 } else {
-                    if(!option.equals("c") || !option.equals("u") && optionInt!=1 && optionInt!=2){
+                    if (!option.equals("c") || !option.equals("u") && optionInt != 1 && optionInt != 2) {
                         break;
                     }
                 }
@@ -190,15 +189,18 @@ public class RentalOffice extends UsefulMethods {
                 System.out.println();
                 String carMarkModel;
                 carMarkModel = choiceCar.getMark() + " " + choiceCar.getModel();
+                System.out.println();
                 System.out.println("You want to rent for " + choiceUser.getNameLastName() + " car: " + carMarkModel
                         + " from year: " + choiceCar.getDateOfProduction().getYear() + ". Is this correct?");
                 System.out.print("Choose \"y\" or \"1\" if \"yes\". If \"no\" choose anything else: ");
                 String yesOrNo = scanner.nextLine();
+                System.out.println();
                 if (yesOrNo.equals("y") || yesOrNo.equals("1")) {
                     do {
                         do {
                             System.out.print("For how many days " + choiceUser.getNameLastName() + " would like to rent a car?: ");
                             String howManyDays = scanner.nextLine();
+                            System.out.println();
                             if (isThisInt(howManyDays) && !howManyDays.equals("0")) {
                                 setHowManyDays(Integer.parseInt(howManyDays));
                                 break;
@@ -206,15 +208,18 @@ public class RentalOffice extends UsefulMethods {
                         } while (true);
                         costOfRentWithAllBonuses(choiceUser, choiceCar);
                         BigDecimal cost = getPriceForRentForClient().multiply(BigDecimal.valueOf(howManyDays));
-                        System.out.println(choiceUser.getNameLastName() + " wish to rent a car " + carMarkModel + " for "
+                        System.out.println(choiceUser.getNameLastName() + " wish to rent a car " + carMarkModel + " for"
                                 + " * " + getHowManyDays() + " * days and this will cost: " + cost + ", is this correct? ");
+                        System.out.println();
                         System.out.print("Choose \"y\" or \"1\" if \"yes\". If \"no\" choose anything else: ");
                         confirmation = scanner.nextLine();
+                        System.out.println();
                         if (confirmation.equals("y") || confirmation.equals("1")) {
                             setRentedCar(choiceCar);
                             setClient(choiceUser);
                             setIncome(cost);
                             setDateOfRent(LocalDate.now());
+
                         } else {
                             System.out.println("You did not confirm for how many days should car be rented!");
                         }
@@ -227,11 +232,11 @@ public class RentalOffice extends UsefulMethods {
             break;
         } while (true);
 
-
         System.out.println("Operation: ");
         if (confirmation.equals("y") || confirmation.equals("1")) {
             choiceUser.setNumberOfRentedCars((choiceUser.getNumberOfRentedCars()) + 1);
             listOfRentedCars.add(new RentalOffice(rentedCar, client, LocalDate.now(), priceForRentForClient, howManyDays, income));
+            listOfOperations.add(new Bookkeeping(1, LocalDate.now(), income));
             listOfNotRentedCars.remove(choiceCar);
             for (int i = listOfRentedCars.size() - 1; i >= 0; ) {
                 System.out.println("Car: " + listOfRentedCars.get(i).getRentedCar().toString());

@@ -7,6 +7,7 @@ public class Menu extends UsefulMethods {
     Garage garage = new Garage();
     CustomersRoom customersRoom = new CustomersRoom();
     RentalOffice rentalOffice = new RentalOffice();
+    Bookkeeping bookkeeping = new Bookkeeping();
 
     private void callMenu() {
         System.out.println();
@@ -64,7 +65,7 @@ public class Menu extends UsefulMethods {
                     customersRoom.activateAUser(customersRoom.getListOfNotActivatedUsers());
                     backToMenu();
                 } else if (choise == 7) {
-                    rentalOffice.rentACar(garage.getListOfNotRentedCars(), customersRoom.getListOfActivatedUsers());
+                    rentalOffice.rentACar(garage.getListOfNotRentedCars(), customersRoom.getListOfActivatedUsers(), bookkeeping.getListOfOperations());
                     backToMenu();
                 } else if (choise == 8) {
                     rentalOffice.showListOfAllRentedCars();
@@ -73,9 +74,15 @@ public class Menu extends UsefulMethods {
                     rentalOffice.returnCarFromRental(rentalOffice.getListOfRentedCars(), garage.getListOfNotRentedCars());
                     backToMenu();
                 } else if (choise == 10) {
-                    System.out.println("10.");
+                    bookkeeping.showListOfAllOperationsInMonth();
+                    backToMenu();
                 } else if (choise == 11) {
-                    System.out.println("11.");
+                    if (bookkeeping.getListOfOperations().isEmpty()) {
+                        System.out.println("Make some operations first!");
+                    } else {
+                        bookkeeping.showListOfAllOperationsInYear();
+                    }
+                    backToMenu();
                 } else if (choise == 12) {
                     System.out.println("Goodbye!");
                 } else {
@@ -88,8 +95,8 @@ public class Menu extends UsefulMethods {
     }
 
     private void enterForGoingBackToMenu() {
-            System.out.print("Pres enter for going back to menu: ");
-            scanner.nextLine();
+        System.out.print("Pres enter for going back to menu: ");
+        scanner.nextLine();
     }
 
     private void backToMenu() {
